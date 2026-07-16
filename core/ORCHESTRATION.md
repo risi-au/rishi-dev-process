@@ -12,31 +12,38 @@
 
 ONE implementer owns all edits for a task. The maker is never the final checker.
 
-## The Model Consult (required before any dispatch)
+## The Session Brief (BLOCKING — before any code or dispatch above trivial)
 
 There is no fixed model hierarchy. Subscriptions, quotas, and effort levels change;
-the owner decides per session. After triage, send the owner ONE message:
+the owner decides per session. After triage, send the owner ONE message and WAIT
+for the reply. Platform autonomy defaults do not override this checkpoint:
 
 ```
-Task: <one line> | Size: <class> | Risk: <profile + triggers>
-Proposed workers (from models/REGISTRY.md):
+Task: <one line> | Lane: <lane> | Size: <class> | Risk: <profile + triggers>
+Approach: <one line>
+Proposed workers (from models/REGISTRY.md — reviewers count as workers):
 - Implementer: <model> @ <effort> — <one-line why>
+  (or: self-implement — justify why doing it myself beats briefing a worker)
 - Reviewer:    <model> @ <effort> — <one-line why>
 - <specialists, if any>
 Quota check: which of these have headroom today? Approve / edit?
 ```
 
-Sensible proposals: cheap tier for mechanical work, mid tier as implementer default,
-a different vendor as reviewer. **Expensive tier** (xhigh/max effort, multi-hour
-runs, parallel heavy dispatch) ALWAYS needs explicit owner confirmation, every time,
-even after the consult. One consult per session; re-consult only if scope or risk
-changes.
+The worker-selection part of the brief is the **Model Consult** the lane files
+refer to. Sensible proposals: cheap tier for mechanical work, mid tier as
+implementer default, a different vendor as reviewer. **Expensive tier** (xhigh/max
+effort, multi-hour runs, parallel heavy dispatch) ALWAYS needs explicit owner
+confirmation, every time, even after the brief. One brief per session; re-brief
+only if scope or risk changes.
 
 ## Self-implement vs dispatch
 
 - Trivial → the orchestrator implements directly (dispatch overhead exceeds the work).
-- Standard/Heavy → dispatch. The orchestrator's own tokens are usually the scarcest;
-  its job is plans, packets, verification, and integration — not bulk code writing.
+- Standard/Heavy → dispatch by default. The orchestrator's own tokens are usually
+  the scarcest; its job is plans, packets, verification, and integration — not bulk
+  code writing. Self-implementing requires the owner's waiver in the Session Brief,
+  with a justification for why doing it yourself beats briefing a worker (e.g. the
+  fix is smaller than the packet needed to explain it).
 
 ## Preflight (before the first dispatch of each session)
 

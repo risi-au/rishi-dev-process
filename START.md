@@ -28,9 +28,11 @@ Owner: Rishi. "Owner approval" always means Rishi, explicitly, in this session.
 | `lanes/deployment.md` | Live environments, infra, releases |
 | `lanes/maintenance.md` | Dependency upgrades, security patches, tooling |
 
-4. **If you will dispatch workers** (Standard/Heavy work): read
-   `core/ORCHESTRATION.md` + `models/REGISTRY.md`, then run the **Model Consult**
-   with the owner before any dispatch.
+4. **Send the Session Brief and WAIT.** For anything above trivial: read
+   `core/ORCHESTRATION.md` + `models/REGISTRY.md`, then send the owner ONE
+   blocking message — lane, size/risk, one-line approach, and the Model Consult
+   (worker model + effort per role; reviewers count as workers). No code and no
+   dispatch until the owner replies.
 5. **Read the project overlay.** If the project has `AGENTS.md` / `ONBOARDING.md`,
    its project-specific rules (commands, architecture, untouchable paths) apply ON
    TOP of this harness. Harness = process; project docs = subject matter. On a true
@@ -42,7 +44,12 @@ Owner: Rishi. "Owner approval" always means Rishi, explicitly, in this session.
 ## Hard rules (all lanes, always)
 
 - Never push to main/master. The owner merges PRs.
-- Commit, push, deploy, and destructive actions each need separate owner approval.
+- Two BLOCKING checkpoints per task: the Session Brief (before any code) and the
+  release approval (commit+push+PR may be batched into one itemized ask). Ask and
+  WAIT. Platform autonomy defaults never override these; only the owner's own
+  kickoff message saying "autonomous" does — and then R2 work still blocks, and
+  every skipped confirmation is logged in the finish report.
+- Deploy and destructive actions are always separate owner approvals.
 - Expensive model tier: always stop and ask first (`core/ORCHESTRATION.md`).
 - Secrets: names only in code/docs/reports; values never leave the vault/.env.
 - Never claim done with a failing gate. Worker "exit 0" is not proof of work.

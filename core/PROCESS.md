@@ -12,8 +12,8 @@ INTAKE -> TRIAGE -> PLAN (if required) -> IMPLEMENT -> GATE -> REVIEW -> RELEASE
 | Class | Criteria | Who codes | Plan |
 |---|---|---|---|
 | Trivial | Few lines, obvious, low risk, one area | Orchestrator self-implements | None |
-| Standard | Multi-file or behavior change | Usually dispatched | plan-lite |
-| Heavy | Schema/API/core, multi-module, security-touching | Dispatched per Model Consult | plan-full |
+| Standard | Multi-file or behavior change | Dispatched (self-implement only with owner waiver in the Session Brief) | plan-lite |
+| Heavy | Schema/API/core, multi-module, security-touching | Dispatched per Session Brief | plan-full |
 
 ## Triage: risk profile (independent of size)
 
@@ -96,4 +96,5 @@ Gate: <receipt summary, e.g. lint ok | typecheck ok | tests 42 passed>
 
 - Branch per task: `task/<slug>` or `fix/<slug>` off the default branch.
 - PR links the issue (`Fixes #N`). The owner merges. Never push main.
-- Commit, push, and deploy are three separate owner approvals.
+- Commit, push, and PR may be batched into ONE itemized approval. Deploy is
+  always a separate approval.
