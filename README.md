@@ -22,7 +22,7 @@ Lane: <lanes/*.md, or "triage it">. Project: <path>. Task: <description or issue
 | `models/` | Worker registry + per-CLI adapters (spawn, preflight, quirks) | Churn allowed; quirks dated + pruned |
 | `templates/` | Contract, plans, context packets, gate receipt, retro | Owner-gated |
 | `retros/` | Session retros land here; data only | Append-only; archived on compaction |
-| `project-setup/` | How to point a project at this harness | Owner-gated |
+| `project-setup/` | How to point a project at this harness + new-machine bootstrap (`new-machine.md`) | Owner-gated |
 | `history/` | Source reports that shaped this harness | Frozen |
 
 ## Design principles
