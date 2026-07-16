@@ -23,6 +23,5 @@
 |---|---|---|---|
 | 1 | lanes/bugfix.md | Step 2 "Reproduce": add "…or establish the failure mechanism from artifacts (screenshot/log/known upstream bug) when the repro is timing/environment-bound; state this substitution in the finish report." | Lane at 31/80 lines — no removal needed |
 
-Owner decision (2026-07-17): Proposal 1 NOT APPROVED for now (repro-substitution
-clause offered as part of a batch; owner did not select it). May be re-proposed
-with more evidence from future sessions.
+Owner decision (2026-07-17): Proposal 1 APPROVED (second decision, same day) —
+repro-substitution clause applied to lanes/bugfix.md.

@@ -28,9 +28,11 @@
 
 Owner decision (2026-07-17): Proposal 1 REJECTED — it formalized autonomy, but the
 owner wanted MORE interactivity; superseded by the blocking Session Brief
-(START.md, core/ORCHESTRATION.md). Proposal 2 NOT APPROVED for now. Proposal 3 NOT
-APPROVED for now; the reviewer-dispatch ambiguity was resolved the other way —
-reviewers DO count as workers in the Session Brief. Also applied: dispatch-by-default
+(START.md, core/ORCHESTRATION.md). Proposal 2 APPROVED later same day —
+repro-substitution clause added to lanes/bugfix.md. Proposal 3 PARTIALLY APPROVED
+later same day — receipts-as-files landed in core/PROCESS.md (plus contract folds
+into plan-lite for Standard/R0–R1); the reviewer-dispatch half was resolved the
+other way — reviewers DO count as workers in the Session Brief. Also applied: dispatch-by-default
 for Standard+ with self-implement justification (core/PROCESS.md,
 core/ORCHESTRATION.md); commit+push+PR batched into one itemized approval, deploy
 always separate (core/PROCESS.md, START.md).

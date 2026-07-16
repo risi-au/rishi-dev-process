@@ -7,7 +7,10 @@ Prereqs: START.md + core read; project overlay read.
 
 1. **Intake.** Symptom, environment, expected vs actual. Issue preferred.
 2. **Reproduce.** A bug you can't reproduce is an investigation — switch lane.
-   Capture the exact repro steps/command.
+   Capture the exact repro steps/command. Exception: for timing/environment-bound
+   bugs, an evidence chain (screenshot/log + code path + known upstream bug) may
+   substitute for live repro — declare the substitution in the finish report and
+   re-run the original repro after deploy.
 3. **Minimise.** Shrink the repro to the smallest failing case. The root cause
    usually reveals itself here — do not skip ahead to patching symptoms.
 4. **Root cause.** State it in one sentence. If it was non-obvious, list the
@@ -24,7 +27,8 @@ Prereqs: START.md + core read; project overlay read.
 
 ## Lane rules
 
-- Never claim fixed without re-running the original repro.
+- Never claim fixed without re-running the original repro (for substituted repros
+  the re-check happens post-deploy — track it in the PR so it isn't forgotten).
 - If the fix grows past ~3 files or touches auth/data, stop and re-triage.
 - If two fix attempts fail, stop: re-diagnose (investigation lane) rather than
   iterating blindly.

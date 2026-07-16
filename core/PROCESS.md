@@ -31,9 +31,12 @@ profile and re-approve the plan — never silently expand the process.
 - Every non-trivial task starts with a **one-page product contract**
   (`templates/product-contract.md`): purpose, in-scope, exclusions, safety
   invariants, acceptance checks, deployment boundary. It is what every worker and
-  reviewer anchors to.
+  reviewer anchors to. For Standard / R0–R1 the contract is the CONTRACT section
+  at the top of plan-lite — one file, not two. Heavy / R2 keeps a separate
+  contract file.
 - plan-lite (`templates/plan-lite.md`): hard cap 2 pages. Default for Standard / R0–R1.
 - plan-full (`templates/plan-full.md`): Heavy or R2 only. Owner approves before code.
+- Plans are FILES in the project's plan location, not chat messages.
 - Plans are never pasted to workers — workers get packets (`core/ORCHESTRATION.md`).
 
 ## Gate
@@ -41,8 +44,9 @@ profile and re-approve the plan — never silently expand the process.
 - Gate = the project's configured checks (typecheck, lint, tests — see project docs;
   a new project sets these up before product code).
 - Run affected tests during implementation; run the FULL gate on every release candidate.
-- Record a **gate receipt** (`templates/gate-receipt.md`): revision, diff hash,
-  commands, results, durations, tool versions.
+- Write the **gate receipt** as a FILE next to the plan (`templates/gate-receipt.md`):
+  revision, diff hash, commands, results, durations, tool versions. A chat summary
+  is not a receipt — reuse requires the file.
 - Reuse: a receipt stays valid while nothing it fingerprints changed. Handing work to
   another agent is NOT a reason to rerun an unchanged gate.
 - Docs-only diffs skip the source gate unless they change commands, config, or
