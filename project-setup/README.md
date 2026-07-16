@@ -31,6 +31,9 @@ harness stays generic; the overlay carries everything the harness calls
 ```
 Read <harness path or repo URL>/START.md and follow it.
 Lane: <lanes/*.md, or "triage it">. Project: <path>. Task: <description or issue #N>.
+Code graph (if the project has one — give the ABSOLUTE path, worktrees lack it):
+use `graphify query "<q>" --graph "<abs path>\graphify-out\graph.json"` to locate
+code before reading files.
 ```
 
 ## 4. New machine

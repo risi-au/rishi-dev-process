@@ -52,9 +52,13 @@ When orchestrating from Claude Code, the codex plugin lanes (`/codex:review`,
   `<LocalAppData>\OpenAI\Codex\bin\<hash>\codex-windows-sandbox-setup.exe`.
   Verify with preflight line 1. Likely the true root cause of the workspace-sync
   project's "three sandbox blocks" (CreateProcessAsUserW).
-- 2026-07: icacls ACL grants on worktrees (`CodexSandboxUsers:(OI)(CI)(M)`) were
-  needed for the UNELEVATED sandbox. Probably obsolete now the elevated sandbox is
-  installed — verify on next real worktree dispatch, then prune this pair.
+- 2026-07-17: **Orca worktrees: dispatches can die with CreateProcessAsUserW
+  error 5 spawning pwsh** — even after the icacls repair AND the elevated-sandbox
+  install. Reliable review-dispatch shape: fully INLINE packet in the prompt plus
+  an explicit "run no tools" instruction (proven on companyos #42, 3 verdicts).
+- 2026-07-17: icacls grants (`CodexSandboxUsers:(OI)(CI)(M)`) are necessary but
+  NOT always sufficient in Orca worktrees (see error-5 entry above). Outside Orca
+  worktrees, possibly obsolete under the elevated sandbox — verify, then prune.
 - 2026-07: codex cannot commit on Windows (sandbox denies `.git` writes) — the
   orchestrator commits. Re-verify under elevated sandbox.
 - 2026-07: no package-manager binaries (e.g. pnpm) inside the sandbox; codex

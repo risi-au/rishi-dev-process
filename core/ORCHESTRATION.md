@@ -66,6 +66,9 @@ Workers never receive the full plan, doc tree, or source dump. They receive a pa
 Full docs stay available on demand — a worker may read specific files it needs —
 but they are never pasted in by default. Cap every worker's return size.
 
+If the project has a code graph, query it BEFORE reading files to locate code,
+and put the graph's absolute path in every packet (`models/graphify.md`).
+
 ## Verifying workers ("exit 0 is not proof of work")
 
 After any worker completes:
