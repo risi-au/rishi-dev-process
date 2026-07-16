@@ -4,11 +4,14 @@
 ## Preflight (before first dispatch of a session)
 
 ```
+codex sandbox -- cmd /c "echo SANDBOX-OK"
 codex exec --sandbox read-only -C "<project>" "Reply with exactly: PREFLIGHT-OK" < /dev/null
 ```
 
-Passes if it prints PREFLIGHT-OK. On failure: check `codex login status`, retry
-once, then swap worker (`core/ORCHESTRATION.md` failure handling).
+Line 1 is FREE (no tokens) and must print SANDBOX-OK within seconds — if it
+hangs, the Windows sandbox install is broken (see quirks: UAC installer loop).
+Line 2 proves login + model. On failure: check `codex login status`, retry once,
+then swap worker (`core/ORCHESTRATION.md` failure handling).
 
 ## Spawn — headless implementer
 
@@ -42,14 +45,20 @@ When orchestrating from Claude Code, the codex plugin lanes (`/codex:review`,
 
 ## Known quirks (dated — prune when stale)
 
-- 2026-07: Windows sandbox needs ACLs granted on the worktree before codex can
-  write: `icacls <worktree> /grant "CodexSandboxUsers:(OI)(CI)(M)" /t /q`
+- 2026-07-17: **UAC installer loop (SOLVED).** With `[windows] sandbox="elevated"`
+  in `~/.codex/config.toml` but the one-time admin setup incomplete, EVERY dispatch
+  relaunches `codex-windows-sandbox-setup.exe` → UAC popup → headless agents hang.
+  Fix (once, human clicks Yes): run elevated
+  `<LocalAppData>\OpenAI\Codex\bin\<hash>\codex-windows-sandbox-setup.exe`.
+  Verify with preflight line 1. Likely the true root cause of the workspace-sync
+  project's "three sandbox blocks" (CreateProcessAsUserW).
+- 2026-07: icacls ACL grants on worktrees (`CodexSandboxUsers:(OI)(CI)(M)`) were
+  needed for the UNELEVATED sandbox. Probably obsolete now the elevated sandbox is
+  installed — verify on next real worktree dispatch, then prune this pair.
 - 2026-07: codex cannot commit on Windows (sandbox denies `.git` writes) — the
-  orchestrator commits.
+  orchestrator commits. Re-verify under elevated sandbox.
 - 2026-07: no package-manager binaries (e.g. pnpm) inside the sandbox; codex
   verifies with tsc/eslint/vitest directly. The orchestrator's root gate run is
   the real gate.
-- 2026-07: three sandbox blocks (CreateProcessAsUserW) in one project before any
-  preflight existed — hence the mandatory preflight above.
 - 2026-07: include in packets: "On limits print LIMIT-ALERT: and stop." Monitor
   logs for `LIMIT-ALERT:|out of credits`.
