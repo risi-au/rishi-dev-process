@@ -29,7 +29,10 @@ harness stays generic; the overlay carries everything the harness calls
 ## 3. Session start prompt (any model, any platform)
 
 ```
-Read <harness path or repo URL>/START.md and follow it.
+Read <harness path or repo URL>/START.md and follow it fully — including the
+Session Brief before any code (wait for my reply) and the session close ritual
+in core/SELF-IMPROVE.md (finish report -> honest retro -> propose improvements
+-> apply what I approve to the harness and push).
 Lane: <lanes/*.md, or "triage it">. Project: <path>. Task: <description or issue #N>.
 Code graph (if the project has one — give the ABSOLUTE path, worktrees lack it):
 use `graphify query "<q>" --graph "<abs path>\graphify-out\graph.json"` to locate
