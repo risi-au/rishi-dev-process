@@ -35,6 +35,16 @@ Write `retros/YYYY-MM-DD-<project>-<slug>.md` from `templates/retro.md`:
 At cap, adding a line means removing a line. If a cap consistently hurts, the retro
 proposal is "raise the cap" — owner-approved like any other change.
 
+## Session close ritual (the work agent IS the auditor — no second agent)
+
+In order, before signing off: (1) finish report; (2) retro file — its friction
+section MUST list every harness rule you skipped or bent this session, honestly;
+(3) present to the owner in chat: a 3-line metrics summary + the proposals;
+(4) proposals the owner approves in chat: apply those exact edits to the harness
+clone (respect caps), set the retro's owner-decision line, commit + push the
+harness repo. The harness is the ONLY repo where pushing main is allowed, and
+only for owner-approved changes in that same chat.
+
 ## Pruning
 
 - models/ quirks unconfirmed for 90+ days: propose deletion in the next retro.
