@@ -34,10 +34,15 @@ must carry that absolute path.
 - Build: `/graphify <project path>` (the skill) or the pipeline in the skill doc.
   Exclude junk dirs (session artifacts, .claude, legacy) and skip docs/video
   unless the owner approves the token cost — code-only is zero tokens.
-- Refresh after merged changes: `/graphify <path> --update` (incremental, cached).
-- Refresh cadence: before starting a task on a project whose graph is older than
-  the last few merges. Stale graphs give stale line numbers — trust file:line
-  from the graph as a locator, not as gospel.
+- Refresh is EVENT-driven, not scheduled (no cron — code goes stale on merges,
+  not on a clock; rebuilds are free/seconds so the hook costs nothing):
+  1. `graphify hook install` in the main checkout auto-rebuilds on commit and
+     checkout; ALSO mirror post-commit → post-merge so `git pull` refreshes
+     (installed on companyos 2026-07-17).
+  2. Session-start check (backstop, e.g. hookless machines): if graph.json's
+     mtime predates the newest main commit, pull + rebuild before querying.
+- Stale graphs give stale line numbers — trust file:line from the graph as a
+  locator, not as gospel.
 
 ## Known quirks (dated — prune when stale)
 
