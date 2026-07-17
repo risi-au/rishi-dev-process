@@ -33,6 +33,9 @@ the gate beat more lines that impress.
 - Never copy .env values, credential files, or user-data directories anywhere.
 - Validate and parameterize at boundaries: no string-built SQL or shell, no
   unsanitized input into paths, HTML, or commands.
+- At a write guarding a uniqueness/lifecycle invariant, prefer ONE atomic statement
+  (INSERT … ON CONFLICT, or conditional UPDATE + rowcount check) over check-then-write
+  — check-then-write is a TOCTOU race under concurrency.
 - Least privilege: services get their own users/keys; never widen permissions to
   make an error disappear without owner approval.
 - Destructive operations (delete data, reset git state, drop tables, force-push,

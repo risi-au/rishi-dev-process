@@ -37,6 +37,22 @@ to exec the `orca` CLI, which the workspace-write sandbox blocks (run hangs on a
 approval prompt). Granular equivalent: `-s danger-full-access -a never`.
 Only inside owner-approved, isolated worktrees.
 
+## Review dispatch (DEFAULT for read-only reviews)
+
+```
+codex exec --sandbox read-only -c model_reasoning_effort=medium -C "<worktree>" "$(cat packet.txt)" < /dev/null
+```
+
+Build the packet as a FILE, inline the full diff, and pass it via `"$(cat file)"`
+(quoted command-substitution — the diff's `$`/backticks are NOT re-interpreted).
+The packet MUST say "do NOT run tools / do NOT call node_repl / judge only from the
+diff below." Filter output with `grep -v -E "^hook:|^mcp:|Completed$"`.
+
+- 2026-07-17: read-only + telling codex to READ the files (not inlining) loops on the
+  `node_repl` MCP tool and/or hangs (>5 min) at the default HIGH effort. Inline-packet
+  + no-tools + `-c model_reasoning_effort=medium` was reliable across companyos
+  #70/#43/#44/#81 (~8 verdicts). Set effort explicitly — the default is high (slow).
+
 ## Review / rescue via Claude Code plugin
 
 When orchestrating from Claude Code, the codex plugin lanes (`/codex:review`,

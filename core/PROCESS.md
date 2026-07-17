@@ -36,6 +36,10 @@ profile and re-approve the plan — never silently expand the process.
   contract file.
 - plan-lite (`templates/plan-lite.md`): hard cap 2 pages. Default for Standard / R0–R1.
 - plan-full (`templates/plan-full.md`): Heavy or R2 only. Owner approves before code.
+- **R2-small exception**: a Standard-sized R2 task (≤~3 files, no migration, deploy,
+  or novel architecture) MAY use plan-lite-with-contract + Session Brief approval
+  instead of plan-full + separate contract — *if* the fresh final reviewer and explicit
+  owner approval still hold. Heavy, migration, or deploy R2 always needs plan-full.
 - Plans are FILES in the project's plan location, not chat messages.
 - Plans are never pasted to workers — workers get packets (`core/ORCHESTRATION.md`).
 
