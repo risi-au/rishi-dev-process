@@ -66,8 +66,15 @@ Workers never receive the full plan, doc tree, or source dump. They receive a pa
 Full docs stay available on demand — a worker may read specific files it needs —
 but they are never pasted in by default. Cap every worker's return size.
 
-If the project has a code graph, query it BEFORE reading files to locate code,
-and put the graph's absolute path in every packet (`models/graphify.md`).
+If the project has code graphs, query BEFORE bulk-reading files to locate code.
+Two tools may exist — do not use both for the same question:
+- **graphify** (architecture / "where is X"): always pass the MAIN checkout's
+  absolute `--graph` path; worktrees lack `graphify-out/` (`models/graphify.md`).
+- **code-review-graph** (diff / PR impact / review risk): use the **open
+  workspace** (per-worktree DB; MCP inherits cwd) — never hard-code MAIN as CRG
+  cwd when in an Orca worktree (`models/code-review-graph.md`).
+Put the relevant path(s) in every packet. Prefer project `AGENTS.md` when it
+defines a graph split.
 
 ## Verifying workers ("exit 0 is not proof of work")
 

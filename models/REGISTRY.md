@@ -11,6 +11,10 @@
 
 Platform runtime (not a model): Orca — `models/orca.md`.
 
+Code-graph tools (not workers): graphify — `models/graphify.md`;
+code-review-graph — `models/code-review-graph.md`. One graph per question;
+see project AGENTS.md when present.
+
 ## Rules
 
 - This table is model-agnostic plumbing: add/remove rows as subscriptions change.

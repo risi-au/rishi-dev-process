@@ -6,10 +6,16 @@ code is FREE (no LLM). Proven in trial (companyos #42, 2026-07-17): one query
 before any file reads replaced the blind exploration sweep (~10–20k tokens) and
 returned fix sites with file:line.
 
+Sibling tool: **code-review-graph** (`models/code-review-graph.md`) — use that
+for diff/PR blast radius, review risk, and test gaps. **One graph system per
+question.** Project `AGENTS.md` may define the split; follow it when present.
+
 ## When to use
 
 - FIRST, before reading any file, when locating code: "where is X implemented",
   "what calls Y", "what connects A to B". One or two queries usually suffice.
+- Architecture overview, communities, god nodes, path between concepts.
+- NOT for "what does this uncommitted diff / PR hit?" — that is code-review-graph.
 - NOT a substitute for pre-edit reads — editing still requires reading the real
   file content. Don't force extra queries once you have the map.
 
@@ -23,11 +29,13 @@ graphify explain "Node" --graph "<abs path>\graphify-out\graph.json"
 
 ## The worktree rule (learned the hard way)
 
-`graphify-out/` is gitignored, so it is ABSENT from fresh worktrees/checkouts.
+`graphify-out/` is gitignored, so it is ABSENT from fresh worktrees/checkouts
+(including Orca paths like `~/orca/workspaces/<project>/<task>`).
 Never assume a relative `graphify-out/` exists — always pass the absolute
-`--graph` path to the project's main checkout (e.g.
+`--graph` path to the project's **main** checkout (e.g.
 `C:\dev\companyos\graphify-out\graph.json`). Kickoff prompts and worker packets
-must carry that absolute path.
+must carry that absolute path. This rule is graphify-only; code-review-graph
+stores per-worktree under `.code-review-graph/` (see its adapter).
 
 ## Building / refreshing a project graph
 
@@ -42,7 +50,8 @@ must carry that absolute path.
   2. Session-start check (backstop, e.g. hookless machines): if graph.json's
      mtime predates the newest main commit, pull + rebuild before querying.
 - Stale graphs give stale line numbers — trust file:line from the graph as a
-  locator, not as gospel.
+  locator, not as gospel. Branch-only code may be missing until main is rebuilt
+  or you accept CRG in the worktree for structure.
 
 ## Known quirks (dated — prune when stale)
 
@@ -51,3 +60,5 @@ must carry that absolute path.
   hence the absolute-path rule above.
 - 2026-07-16: companyos graph is code-only (347 files; docs/SQL layers deferred —
   docs need ~9 subagents of tokens, SQL needs `pip install "graphifyy[sql]"`).
+- 2026-07-18: companyos also runs code-review-graph; dual-graph routing lives in
+  project AGENTS.md + this adapter pair — do not hard-code CRG to main cwd.

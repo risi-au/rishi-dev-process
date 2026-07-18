@@ -12,6 +12,18 @@ already working in it. A single-worker task does not need it.
 - task-create → dispatch → check --wait lifecycle tracking.
 - Persistent history, usable for retrospectives.
 
+## Worktrees vs code graphs
+
+Orca checkouts are separate folders (e.g.
+`C:\Users\rishi\orca\workspaces\companyos\<task>`), not only the main clone.
+- **graphify:** still query MAIN's absolute `graphify-out\graph.json` — worktrees
+  do not get that dir (`models/graphify.md`).
+- **code-review-graph:** per worktree under `.code-review-graph/`; MCP must
+  inherit the agent workspace cwd (no hard-coded main path). Build once in a
+  new worktree if status is empty (`models/code-review-graph.md`).
+- Product work runs in the worktree cwd; kickoff prompts should name both
+  Project (canonical main path) and Workspace (open Orca path).
+
 ## Mechanics
 
 - Create a worker terminal:

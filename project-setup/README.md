@@ -33,10 +33,19 @@ Read <harness path or repo URL>/START.md and follow it fully — including the
 Session Brief before any code (wait for my reply) and the session close ritual
 in core/SELF-IMPROVE.md (finish report -> honest retro -> propose improvements
 -> apply what I approve to the harness and push).
-Lane: <lanes/*.md, or "triage it">. Project: <path>. Task: <description or issue #N>.
-Code graph (if the project has one — give the ABSOLUTE path, worktrees lack it):
-use `graphify query "<q>" --graph "<abs path>\graphify-out\graph.json"` to locate
-code before reading files.
+Lane: <lanes/*.md, or "triage it">.
+Project: <canonical path, e.g. C:\dev\companyos>.
+Workspace: <open folder / Orca worktree cwd — product work happens here>.
+Task: <description or issue #N>.
+Code graphs (if any — honor project AGENTS.md; drop lines that do not apply):
+  - Locate / architecture: graphify against MAIN absolute path
+    (graphify-out is gitignored; Orca worktrees lack it):
+      graphify query "<q>" --graph "<MAIN>\graphify-out\graph.json"
+    before bulk-reading files. See models/graphify.md.
+  - Diff / PR blast radius / review risk: code-review-graph in THIS workspace
+    (per-worktree .code-review-graph/; MCP inherits cwd; build once if empty).
+    Do NOT hard-code MAIN as CRG cwd. See models/code-review-graph.md.
+  - One graph system per question — do not run both for the same ask.
 ```
 
 ## 4. New machine

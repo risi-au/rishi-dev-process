@@ -59,12 +59,18 @@ Full details and history: `models/codex.md`.
 
 ## Phase 5 — Supporting tools
 
-1. graphify (code knowledge graphs): `python -m pip install graphifyy`
+1. graphify (architecture / locate graphs): `python -m pip install graphifyy`
    (double-y is the real package; verified non-typosquat 2026-07) then
    `graphify install`. Per-project indexing happens per project, not here.
-2. Syncthing — if this machine joins the owner's working-file sync mesh.
+   Adapter: `models/graphify.md` (always query via MAIN absolute `--graph` path;
+   worktrees lack `graphify-out/`).
+2. code-review-graph (diff / PR impact graphs): `python -m pip install
+   code-review-graph` (or pipx/uv). Wire MCP as `code-review-graph serve` with
+   **no fixed main cwd** so Orca worktrees inherit the open folder. Adapter:
+   `models/code-review-graph.md`.
+3. Syncthing — if this machine joins the owner's working-file sync mesh.
    **[OWNER]** device pairing.
-3. Docker Desktop — only if a project overlay requires it (e.g. companyos
+4. Docker Desktop — only if a project overlay requires it (e.g. companyos
    postgres). Check project docs before installing.
 
 ## Phase 6 — Projects
@@ -77,8 +83,11 @@ For each project this machine will work on:
    (`project-setup/README.md` has the block).
 3. **[OWNER]** Provide `.env` / secrets from the vault — the agent never
    fetches, copies, or reads secret values; it only confirms the file exists.
-4. Optional: build the project's code graph — `/graphify <project path>`
-   (exclude junk dirs; zero tokens for code-only).
+4. Optional graphs (pick what the project uses):
+   - graphify on MAIN: `/graphify <project path>` (code-only = zero LLM tokens).
+   - code-review-graph in MAIN: `cd <project> && code-review-graph build`.
+   - Each new Orca worktree that needs review/impact: `code-review-graph build`
+     once in that worktree if `status` shows 0 files.
 
 ## Phase 7 — Verification checklist (agent runs all, reports a table)
 
@@ -90,6 +99,7 @@ codex --version                                   -> prints version
 codex sandbox -- cmd /c "echo SANDBOX-OK"         -> SANDBOX-OK, no UAC
 grok --version                                    -> prints version (if active)
 graphify --version                                -> prints version
+code-review-graph --version                       -> prints version
 ```
 
 Then run each active worker's full preflight from `models/<worker>.md`
