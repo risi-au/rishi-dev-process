@@ -7,9 +7,12 @@
 | Codex | `codex` 0.144.4 (npm) | Installed; ChatGPT sub | Mid (default) → Expensive (high/xhigh) | Implementer, reviewer, rescue | `models/codex.md` |
 | Grok | `grok` 0.2.101 | Installed | Cheap–Mid, fast | Implementer (mechanical/parallel), second opinion | `models/grok.md` |
 | Claude | `claude` 2.1.211 | Installed; Claude sub | Mid–Expensive | Orchestrator (typical); reviewer. Worker use consumes the same sub that usually orchestrates — flag it in the consult | `models/claude.md` |
+| cline | `cline` headless, via OmniRoute combos | Installed; proven at scale 2026-07-25 | Combo-selected: cheap → expensive | Implementer (default for dispatched cards), adversarial reviewer, mechanical fixes | `models/cline.md` |
 | DeepSeek | — | **No CLI installed yet** | Cheap-tier candidate | — | Add adapter when installed |
 
-Platform runtime (not a model): Orca — `models/orca.md`.
+Platform runtimes (not models): Orca — `models/orca.md`; **OmniRoute** (model router
+at `localhost:20128`; workers target `sprint-*` combos, not vendor ids) —
+`models/omniroute.md`.
 
 Code-graph tools (not workers): graphify — `models/graphify.md`;
 code-review-graph — `models/code-review-graph.md`. One graph per question;

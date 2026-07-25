@@ -28,12 +28,13 @@ profile and re-approve the plan — never silently expand the process.
 
 ## Plan rules
 
-- Every non-trivial task starts with a **one-page product contract**
-  (`templates/product-contract.md`): purpose, in-scope, exclusions, safety
-  invariants, acceptance checks, deployment boundary. It is what every worker and
-  reviewer anchors to. For Standard / R0–R1 the contract is the CONTRACT section
-  at the top of plan-lite — one file, not two. Heavy / R2 keeps a separate
-  contract file.
+- Every non-trivial task anchors to a **one-page product contract**: purpose,
+  in-scope, exclusions, safety invariants, acceptance checks, deployment boundary
+  (`templates/product-contract.md`). **Do not duplicate what already exists** — where
+  the GitHub issue already states scope, exclusions and acceptance criteria, that
+  issue IS the contract: link it and note any delta. Writing a second copy is pure
+  token cost and immediately drifts. For Standard / R0–R1 the contract is the
+  CONTRACT section at the top of plan-lite — one file, not two.
 - plan-lite (`templates/plan-lite.md`): hard cap 2 pages. Default for Standard / R0–R1.
 - plan-full (`templates/plan-full.md`): Heavy or R2 only. Owner approves before code.
 - **R2-small exception**: a Standard-sized R2 task (≤~3 files, no migration, deploy,
@@ -48,9 +49,15 @@ profile and re-approve the plan — never silently expand the process.
 - Gate = the project's configured checks (typecheck, lint, tests — see project docs;
   a new project sets these up before product code).
 - Run affected tests during implementation; run the FULL gate on every release candidate.
-- Write the **gate receipt** as a FILE next to the plan (`templates/gate-receipt.md`):
-  revision, diff hash, commands, results, durations, tool versions. A chat summary
-  is not a receipt — reuse requires the file.
+- **The orchestrator runs the real gate.** A worker's "green" is scoped to what it
+  actually ran, which is never the full suite (see `models/cline.md` — its command
+  runner caps at ~30s). This caught failures workers could not see three times in one
+  session. Never accept a worker's gate claim as the gate.
+- Record the gate where it will actually be read: **CI + the PR body is enough** for a
+  normal release candidate. Write the gate-receipt file
+  (`templates/gate-receipt.md`) only when reuse matters — an expensive or
+  non-reproducible gate, or a handoff where CI cannot run it. Reuse requires the file;
+  routine work does not.
 - Reuse: a receipt stays valid while nothing it fingerprints changed. Handing work to
   another agent is NOT a reason to rerun an unchanged gate.
 - Docs-only diffs skip the source gate unless they change commands, config, or
@@ -66,6 +73,14 @@ FULL_REVIEW -> FOCUSED_FIX -> FOCUSED_REREVIEW -> release
    possible) reviews the reviewer packet + the complete release diff. ALL findings
    are batched in one response, each with a stable ID and a status:
    `BLOCKING | NON_BLOCKING | QUESTION`.
+   **Review the guarantee, not just the plan.** Conformance review ("does the diff
+   match what we said?") is necessary but not sufficient: on companyos-lexi Shot 8 all
+   four real defects *did* match the plan and would have passed it — including a route
+   by which an imported bundle could mark knowledge human-confirmed that no human
+   confirmed, the exact failure the batch existed to prevent. For anything carrying a
+   correctness, safety, or privacy guarantee, point the reviewer at **breaking that
+   guarantee**, name the specific ways you suspect it could fail, and tell it that
+   "the batch is sound" is an acceptable answer and padding with style nits is not.
 2. **FOCUSED_FIX** — one correction pass fixes all BLOCKING findings together.
    Rerun the full gate on the corrected candidate; update the receipt.
 3. **FOCUSED_REREVIEW** — checks ONLY: the finding IDs, files changed by the fixes,
@@ -103,6 +118,13 @@ Gate: <receipt summary, e.g. lint ok | typecheck ok | tests 42 passed>
 ## Release
 
 - Branch per task: `task/<slug>` or `fix/<slug>` off the default branch.
-- PR links the issue (`Fixes #N`). The owner merges. Never push main.
-- Commit, push, and PR may be batched into ONE itemized approval. Deploy is
-  always a separate approval.
+- PR links the issue (`Fixes #N`). Never push main directly.
+- **The orchestrator merges its own PRs** (owner decision 2026-07-25) when ALL of the
+  merge floor holds:
+  1. the FULL gate is green, run **uncached** (never trust a cached lint/typecheck);
+  2. CI on the PR is green — a green *local* gate is not a substitute;
+  3. an independent adversarial review found nothing blocking;
+  4. the diff is entirely in scope for the task.
+  Any one failing → the PR waits for the owner, with a written reason in the PR body.
+- Deploy is a separate approval whenever merging is not itself the deploy. Where merge
+  auto-deploys, say so plainly before merging.

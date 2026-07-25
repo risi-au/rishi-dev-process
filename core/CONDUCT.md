@@ -49,3 +49,10 @@ the gate beat more lines that impress.
 - Comments only for constraints the code can't show. No "fixed per review" narration.
 - Tests prove the contract: a bugfix ships with the regression test that would have
   caught it; a feature ships with tests for its acceptance criteria.
+- **Pair every "X must be absent" test with a positive case proving X still appears
+  when it should.** An absence-only test is passed by deleting everything. On
+  companyos-lexi a leak filter was verified by absence alone; two more leak paths went
+  unnoticed until an adversarial review found them.
+- A test suite where everything passes on the first run may be measuring nothing. Say
+  so rather than banking the green tick — especially for quality harnesses, where an
+  uncomfortable baseline is more useful than a flattering one.

@@ -60,8 +60,15 @@ Workers never receive the full plan, doc tree, or source dump. They receive a pa
   contract excerpt, allowed files, forbidden actions, verify commands, return
   format + return-size cap.
 - Reviewer packet (`templates/packet-reviewer.md`): ≤20-line plan summary, full
-  release diff + stats, risk triggers, gate receipt, known limitations, findings
-  format + cap.
+  release diff + stats, risk triggers, gate evidence, known limitations, findings
+  format + cap. **A reviewer packet MUST explicitly permit read-only shell** (git
+  diff/log, grep, lint, typecheck, tests). The standard hard-constraint block reads as
+  "no terminal commands at all": 2026-07-25 a reviewer obeyed it literally, could not
+  verify a single gate number, and its whole review was code-reading only.
+- Every implementer packet states: **write in small incremental edits, never more than
+  ~120 lines per edit** (`models/cline.md` — a card ignoring this died mid-write), and
+  what to do when the full test suite exceeds the worker's command timeout (say so;
+  never claim green; run targeted tests from the repo root).
 
 Full docs stay available on demand — a worker may read specific files it needs —
 but they are never pasted in by default. Cap every worker's return size.
@@ -87,8 +94,13 @@ Silent no-ops are a known failure mode (see `models/grok.md`).
 ## Failure handling
 
 Classify every failure: `product | test | environment | worker-session | access`.
+- **A worker that dies with a connection error → re-run its preflight before blaming
+  the packet.** A dead router/service makes every dispatch fail in seconds and looks
+  exactly like a bad prompt (`models/omniroute.md`, 2026-07-25).
 - Retry the same failed mechanism ONCE. Then: swap worker model (one replacement
   max), or change lane (e.g. plugin route instead of raw CLI), or stop and ask.
+- When dispatch is blocked but the orchestrator is not, keep the non-dispatch work
+  moving (gates, review, commits, PRs) and say plainly what is blocked and why.
 - Sandbox/auth/quota failures are infrastructure events — count them in retro
   metrics, never as review cycles.
 
