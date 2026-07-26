@@ -26,6 +26,14 @@ INTAKE -> TRIAGE -> PLAN (if required) -> IMPLEMENT -> GATE -> REVIEW -> RELEASE
 List the exact triggers in the plan. If new triggers appear mid-work, promote the
 profile and re-approve the plan — never silently expand the process.
 
+**Gear (Lexi only, `lanes/ship.md`):** Ship gear is the R0/R1 fast path for Lexi
+work with no Guarantee-gear trigger (auth/permissions, data deletion/retention,
+citation/trust semantics, MCP public contract changes, DB migrations, or anything
+carrying a named guarantee) — one implementer card, no per-card adversarial review,
+review deferred to a mandatory shot-end batched pass. Guarantee gear (the process
+below, in full) is mandatory for R2 and for any card matching a trigger regardless
+of size. When in doubt, Guarantee gear.
+
 ## Plan rules
 
 - Every non-trivial task anchors to a **one-page product contract**: purpose,

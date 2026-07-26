@@ -20,6 +20,7 @@ Owner: Rishi. "Owner approval" always means Rishi, explicitly, in this session.
 
 | Lane | Use when |
 |---|---|
+| `lanes/ship.md` | **DEFAULT for Lexi (`companyos-lexi`) work** — bounded, well-understood change with no load-bearing guarantee at stake |
 | `lanes/new-project.md` | Nothing exists yet; greenfield app/service/tool |
 | `lanes/feature.md` | New capability in an existing project |
 | `lanes/bugfix.md` | Something is broken |
