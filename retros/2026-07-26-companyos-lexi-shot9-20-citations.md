@@ -30,3 +30,6 @@ additionally directed a fourth, larger change: fix "workers reporting green over
 defects" reliably. That exceeded this retro's 3-proposal cap by explicit owner instruction
 and landed as new `core/GREEN.md` (+ `templates/packet-falsification.md`, and the mutation
 receipt in `core/CONDUCT.md`). Applied in the same session; caps verified.
+
+Follow-up decision (owner, 2026-07-26): a PARTIAL finding is not a new review cycle — one
+attempt to finish it, independently verified, then STOP and ask. Applied to core/PROCESS.md.

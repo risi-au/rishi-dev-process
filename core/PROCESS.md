@@ -96,6 +96,11 @@ FULL_REVIEW -> FOCUSED_FIX -> FOCUSED_REREVIEW -> release
   interfaces, auth, deployment behavior, dependencies, or >~25% of the reviewed diff.
 - After TWO `REQUEST_CHANGES` cycles: STOP. Re-plan or ask the owner for a
   scope/risk decision. Review is a release gate, not an unlimited audit.
+- **A finding the reviewer marks PARTIAL is not a new cycle** (owner decision 2026-07-26).
+  Finishing an incomplete fix does not count as a send-back — but: ONE attempt only, it
+  must be verified by someone other than whoever wrote it, and if the reviewer is still
+  unsatisfied you STOP and go to the owner. Without that cap, "it's the same finding" is a
+  self-serving reading that never terminates, which is how it was used on 2026-07-26.
 - Verdicts: `APPROVED | REQUEST_CHANGES | NEEDS_REWORK` (approach wrong → re-plan).
 - Approval applies only to the reviewed diff. New commits invalidate it.
 
