@@ -27,6 +27,11 @@ Prereqs: START.md + core read; project overlay (AGENTS.md / ONBOARDING.md) read.
 
 ## Lane rules
 
+- **Verify the issue's stated starting point against the tree before writing any packet.**
+  If it describes a type, capability or migration state, confirm that exists. Grep for
+  duplicate copies of any type the card will change. (2026-07-26: an issue claimed a shape
+  had been frozen by earlier work; it had not, five divergent copies existed, and the
+  duplication *was* the bug. A packet written from the issue text would have been nonsense.)
 - Acceptance criteria exist before implementation starts. No criteria, no code.
 - Scope creep discovered mid-work: note it, finish the contracted scope, file the
   extra as a new issue. Don't absorb it.

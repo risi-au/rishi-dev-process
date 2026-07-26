@@ -15,6 +15,7 @@ Owner: Rishi. "Owner approval" always means Rishi, explicitly, in this session.
 2. **Read the core (required):**
    - `core/PROCESS.md` — loop, triage, risk profiles, gates, review state machine
    - `core/CONDUCT.md` — how to write code (lean, secure, surgical)
+   - `core/GREEN.md` — why a worker's "tests pass" is not evidence, and the cure per case
 3. **Pick the lane** (owner may point you at one; otherwise triage and confirm):
 
 | Lane | Use when |

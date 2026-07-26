@@ -28,6 +28,7 @@ Write `retros/YYYY-MM-DD-<project>-<slug>.md` from `templates/retro.md`:
 | START.md | 100 lines |
 | core/PROCESS.md, core/ORCHESTRATION.md | 150 lines each |
 | core/CONDUCT.md | 80 lines |
+| core/GREEN.md | 90 lines |
 | core/SELF-IMPROVE.md | 60 lines |
 | each lanes/*.md | 80 lines |
 | each models/*.md | 120 lines — prune, don't grow |

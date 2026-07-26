@@ -44,6 +44,9 @@ only if scope or risk changes.
   code writing. Self-implementing requires the owner's waiver in the Session Brief,
   with a justification for why doing it yourself beats briefing a worker (e.g. the
   fix is smaller than the packet needed to explain it).
+- **Enforce this mechanically where the runtime allows** — intent has failed in practice
+  (2026-07-26). Deny the orchestrator's writes to source; never its reads
+  (`models/claude-code-orchestrator.md`). Confirm the lock is live before dispatch one.
 
 ## Preflight (before the first dispatch of each session)
 
@@ -90,6 +93,10 @@ After any worker completes:
 2. Run the gate yourself (or demand the receipt).
 3. Read the finish report against the success criteria.
 Silent no-ops are a known failure mode (see `models/grok.md`).
+**A worker's "green" is a claim about a measurement it authored.** `core/GREEN.md` names the
+four ways it lies and the cure for each — read it before trusting any batch.
+Log every dispatch to `templates/dispatch-ledger.md` **at dispatch time**, so delegation and
+token hotspots are checkable facts rather than end-of-session recollection.
 
 ## Failure handling
 

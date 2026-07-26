@@ -12,11 +12,22 @@ FOR FULL_REVIEW — DIFF: <complete release diff + stats>
 FOR FOCUSED_REREVIEW — instead provide: the finding IDs under verification, the
 fix diff, and the halo files. Check ONLY those + the updated receipt.
 
+READ-ONLY SHELL IS PERMITTED AND EXPECTED: git diff/log/show, grep, lint, typecheck,
+tests, `node -e`. Forbidden: editing files, any state-mutating git command. Report; don't fix.
+(A blanket "no terminal commands" once made a reviewer verify zero gate numbers.)
+
 REVIEW AXES:
-(a) correctness vs the plan summary and contract;
-(b) safety invariants held;
-(c) security — secrets, injection, permissions, destructive paths;
-(d) lean — flag overbuild and drive-by edits as findings.
+(a) **BREAK THE GUARANTEE** — not "does the diff match the plan". Name the guarantee in
+    plain language and attack it. Conformance review has passed every real defect we've
+    shipped. State the specific ways you suspect it fails, including your own suspicions
+    of the orchestrator's reasoning — "the batch is sound" is an acceptable answer, style
+    nits are not;
+(b) **silent failure sweep** — list every filter, guard, early return, default and catch
+    the diff adds. For each: what happens when it rejects something that should have
+    passed, and does anything observe the rejection? (`core/GREEN.md`);
+(c) safety invariants held; secrets, injection, permissions, destructive paths;
+(d) **do the new tests discriminate?** Would any pass against the pre-change code?
+(e) lean — flag overbuild and drive-by edits as findings.
 
 RETURN (max <N> lines):
 ```

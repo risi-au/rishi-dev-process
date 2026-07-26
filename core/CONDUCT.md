@@ -56,3 +56,7 @@ the gate beat more lines that impress.
 - A test suite where everything passes on the first run may be measuring nothing. Say
   so rather than banking the green tick — especially for quality harnesses, where an
   uncomfortable baseline is more useful than a flattering one.
+- **Mutation receipt: every new regression test must be SHOWN to fail against the
+  pre-change code**, with the verbatim failure — not asserted. Stash the source change
+  only, keep the test, run it, capture the failure, restore. A new test that passes
+  against the old code is measuring nothing (`core/GREEN.md`).

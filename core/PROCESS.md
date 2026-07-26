@@ -49,6 +49,10 @@ profile and re-approve the plan — never silently expand the process.
 - Gate = the project's configured checks (typecheck, lint, tests — see project docs;
   a new project sets these up before product code).
 - Run affected tests during implementation; run the FULL gate on every release candidate.
+- **A green gate does not mean the guarantee holds.** Across two consecutive R2 batches,
+  7 of 9 real defects had passing tests AND a green gate; only an adversarial review found
+  them. `core/GREEN.md` is the required reading on why, and on falsification-first tests
+  (write the failing test in its own card, before the implementer, which may not edit it).
 - **The orchestrator runs the real gate.** A worker's "green" is scoped to what it
   actually ran, which is never the full suite (see `models/cline.md` — its command
   runner caps at ~30s). This caught failures workers could not see three times in one
