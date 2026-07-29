@@ -4,11 +4,12 @@
 ## Metrics
 
 - Lane: `ship.md` | Size/risk: 6 cards, three of them trust boundaries | Elapsed: overnight, single session
-- Workers spawned: **15 dispatches across 7 cards** —
-  `lexi-secure` ×9, `lexi-implement` ×3, `lexi-scout-grok` ×1, `lexi-review` ×2
-- Review cycles: **2**, both the standing auth-boundary exception (#176, #134). **Both returned
-  REQUEST_CHANGES and both were right.** #176's was a coverage gap; #134's was a live HIGH.
-- Gate runs: 9 CI runs; 1 red (the composition break), 1 red-then-green after integration
+- Workers spawned: **20 dispatches across 9 cards** —
+  `lexi-secure` ×11, `lexi-implement` ×3, `lexi-implement-hard` ×2, `lexi-review` ×3, `lexi-scout-grok` ×1
+- Review cycles: **3**, all the standing auth/trust-boundary exception (#176, #134, #112).
+  **All three returned REQUEST_CHANGES and all three were right.** #176: a coverage gap. #134: a live
+  privilege escalation. #112: confidential data made portable, plus credentials persisted.
+- Gate runs: 14 CI runs; 1 red (the composition break), 1 red-then-green after integration
 - **Infra failures: 3** — `worker-session` ×2 (silent OOM kill; `API Error: Response stalled
   mid-stream`), plus 1 wasted pass caused by dispatching onto a stale branch (my error, classified
   `worker-session` only because the worker inherited it)
@@ -18,9 +19,19 @@
 - Blocking checkpoint: **waived by the owner's kickoff** ("do not block on him"). Decisions taken
   unilaterally and stated: #135's trust gate, #134's scope cut, #183's fix shape.
 
-**Shipped:** #180, #183, #176, #178, #135 — merged, deployed, verified live.
-**Held deliberately:** #134 (PR #191) — CI-green, one owner decision away (#192).
-**Filed:** #183 (from the scout), #186, #192. **Docs PRs:** #182, #187, #190, #193.
+**Shipped — 9 cards, all merged, deployed, and verified against `information_schema` rather than a
+ledger or a report:** #180, #183, #176, #178, #135, #141, #134, #192, #112. The owner's entire priority
+list, plus #116's Tier 0.
+
+**Filed:** #183 (from the scout), #186, #192, #194, #197. **Docs PRs:** #182, #187, #190, #193, #196, #198.
+**Owner-gated and left unmerged:** documentation repo PR #1.
+
+**Two things found that no card asked for, and both mattered more than most cards:**
+- **Production had never been backed up.** The only job dumped the *retired* database while logging
+  success nightly, because both databases share a name. Fixed externally with a restore-verified
+  acceptance test (#194).
+- **The docs named a retired container stack that was still running** and answering queries with stale
+  data. It misled this orchestrator and a scout before being caught.
 
 - **The auth-boundary review exception paid for itself twice in one night, again.** Both passes
   returned REQUEST_CHANGES; neither finding was reachable from a green gate. #134's was a genuine
@@ -55,6 +66,12 @@
 - **My #176 packet named the monotonic-timestamp trap but not "generate, never hand-edit".** The
   worker hand-wrote the journal and shipped no snapshot. `meta-chain.test.ts` would have caught it,
   but only after a full CI cycle. #173's packet had the right line; it did not travel.
+- **I did not tell concurrent cards each other's pending migration number.** #134 and #112 both created
+  `0052`. A worker cannot know this from inside its worktree — it is an orchestrator duty. Caught before
+  either merged, and the two rules above resolved it without intervention, but this is the **second**
+  recurrence (`BUILD-STATUS.md` carries the same note from the #93 era). **Candidate proposal for next
+  session** — not added now, because `ORCHESTRATION.md` is at its 150-line cap and tonight's three are
+  already applied.
 
 ## Proposals (max 3)
 
