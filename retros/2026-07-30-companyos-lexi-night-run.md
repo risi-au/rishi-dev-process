@@ -66,12 +66,15 @@ list, plus #116's Tier 0.
 - **My #176 packet named the monotonic-timestamp trap but not "generate, never hand-edit".** The
   worker hand-wrote the journal and shipped no snapshot. `meta-chain.test.ts` would have caught it,
   but only after a full CI cycle. #173's packet had the right line; it did not travel.
-- **I did not tell concurrent cards each other's pending migration number.** #134 and #112 both created
-  `0052`. A worker cannot know this from inside its worktree — it is an orchestrator duty. Caught before
-  either merged, and the two rules above resolved it without intervention, but this is the **second**
-  recurrence (`BUILD-STATUS.md` carries the same note from the #93 era). **Candidate proposal for next
-  session** — not added now, because `ORCHESTRATION.md` is at its 150-line cap and tonight's three are
-  already applied.
+- **Migration numbers collided twice, and proposal #1 already solves it — no fourth proposal needed.**
+  #112's migration was renumbered `0052`→`0053` after #134 landed, then `0053`→`0054` after PR #199
+  landed. **#199 was authored and merged by the owner's own account mid-run**, i.e. a collision source
+  the orchestrator could not enumerate in advance. So "tell each worker the other's pending number" is
+  the wrong fix — it only covers collisions you can see. The right fix is *merge the trunk and
+  regenerate before gating*, which is **proposal #1**, and it resolved both collisions with no
+  intervention. Worth recording as evidence that #1 earns its line, not as new process.
+  **Coordination note for future runs: `main` can move from outside this session.** Do not assume the
+  orchestrator is the only writer.
 
 ## Proposals (max 3)
 
