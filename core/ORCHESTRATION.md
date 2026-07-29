@@ -86,6 +86,31 @@ Two tools may exist — do not use both for the same question:
 Put the relevant path(s) in every packet. Prefer project `AGENTS.md` when it
 defines a graph split.
 
+## Proportion — match the packet to the card (2026-07-29)
+
+The evidence rules below are not free: a full uncached suite is minutes of wall clock per
+run. Demanding it on a card that changes a few lines is the most common avoidable cost in
+this harness — and one the worker cannot refuse, because the packet told it to.
+
+Scale the demand to what is actually at risk:
+
+| Card | Gate | Evidence |
+|---|---|---|
+| A few lines, no guarantee at stake, config/docs/copy | Targeted tests for the touched area + lint/typecheck | State what you ran. No fail-before/pass-after ceremony for a change with no behaviour to prove. |
+| Ordinary bounded change | Full uncached gate once | Fail-before/pass-after on the specific behaviour changed |
+| Migration, auth, permissions, trust semantics, MCP contract | Full uncached gate + verify the artifact, not the gate | Everything: pre-fix proof, schema queried not ledger, confirm the test RAN not skipped |
+
+**Two traps worth naming in the packet itself:**
+
+- **Pre-fix proof on a brand-new field proves nothing.** `expect(result.ok)` fails before the
+  fix because `ok` does not exist yet — that demonstrates the field is new, not that behaviour
+  changed. Demand the pre-fix assertion be on *behaviour that already had a shape*.
+- **A known flake must be named as out of scope**, with the file and the reason. Otherwise a
+  worker burns a pass chasing it, or worse, "fixes" it by loosening the test.
+
+This is not permission to skip gates on risky work — proportion runs both ways, and the
+heavy column is mandatory when `lanes/ship.md`'s triggers apply.
+
 ## Verifying workers ("exit 0 is not proof of work")
 
 After any worker completes:

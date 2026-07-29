@@ -55,3 +55,19 @@ re-dispatching or blaming the packet.**
 
 When it is down, the orchestrator can still run gates, review diffs, commit, and open
 PRs — only dispatch is blocked. Say so plainly and keep the non-dispatch work moving.
+
+## Dispatch quirks (2026-07-29)
+
+**Pass ABSOLUTE paths for every dispatch argument — including the output file.** A wrapper may
+resolve some arguments and not others. Observed: worktree and packet were resolved, the output
+path was not, so the child (whose cwd is the worktree) looked for its prompt in the wrong tree,
+got empty stdin, and died instantly with `Input must be provided either through stdin or as a
+prompt argument when using --print`. The report is created 0 bytes; the failure surfaces nowhere else.
+
+**Watch commits, not file size, for liveness.** The report is written at the END of a run, so a
+0-byte report means "running" and "died on launch" identically. Poll
+`git log origin/<branch>..HEAD` in the worktree, and check the `.err.txt` sidecar early — a clean
+launch leaves it 0 bytes with the process alive; a failed one has an error in it within seconds.
+
+**The dispatched PID is a shell wrapper, not the worker.** It shows near-zero CPU all run while a
+child does the work. Its being alive says nothing about progress.

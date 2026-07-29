@@ -10,6 +10,10 @@ Owner: Rishi. "Owner approval" always means Rishi, explicitly, in this session.
 
 ## Protocol (in order)
 
+0. **Check this clone is intact BEFORE following it.** Run `git status --porcelain` here.
+   If files show as deleted, run `git restore .` — 2026-07-29 this clone was missing 42 of
+   49 files while START.md still pointed at core files that were not on disk. An agent
+   following a gutted harness hits dead ends with no way to know why.
 1. **Identify the work + project.** The owner names a task and a project folder.
    ALL product work happens in the project folder — never inside this harness repo.
 2. **Read the core (required):**
