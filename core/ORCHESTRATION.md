@@ -117,9 +117,8 @@ After any worker completes:
 1. Confirm a diff exists and touches only allowed files.
 2. Run the gate yourself (or demand the receipt).
 3. Read the finish report against the success criteria.
-Silent no-ops are a known failure mode (see `models/grok.md`).
-**A worker's "green" is a claim about a measurement it authored.** `core/GREEN.md` names the
-four ways it lies and the cure for each — read it before trusting any batch.
+Silent no-ops are a known failure mode (`models/grok.md`). **A worker's "green" is a claim about a
+measurement it authored** — `core/GREEN.md` names the four ways it lies; read it before any batch.
 Log every dispatch to `templates/dispatch-ledger.md` **at dispatch time**, so delegation and
 token hotspots are checkable facts rather than end-of-session recollection.
 
