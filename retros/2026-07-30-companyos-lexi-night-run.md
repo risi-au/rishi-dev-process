@@ -64,4 +64,4 @@
 | 2 | `core/ORCHESTRATION.md` → "Proportion", trap list | Add a third trap: **"A card that adds a migration must be told to generate metadata with the drizzle generate command and never hand-edit the journal or a snapshot. Require the report to confirm the snapshot exists, `prevId` chains, and the journal `when` strictly increases."** | Merge the two existing trap bullets' preambles; the examples carry the meaning |
 | 3 | `core/ORCHESTRATION.md` → "Context packets" | Add: **"At most ONE concurrently-dispatched worker may be told to run the full test suite; give the others targeted tests and let CI run the full one. Three parallel suites OOM-killed a worker on 2026-07-30."** | Same as #1 |
 
-Owner decision: PENDING
+Owner decision: APPROVED 2026-07-30 — all three applied to core/ORCHESTRATION.md (Platforms, Session Brief, self-implement and graph paragraphs compressed to stay under the 150-line cap).

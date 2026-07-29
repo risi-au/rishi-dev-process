@@ -29,21 +29,17 @@ Proposed workers (from models/REGISTRY.md — reviewers count as workers):
 Quota check: which of these have headroom today? Approve / edit?
 ```
 
-The worker-selection part of the brief is the **Model Consult** the lane files
-refer to. Sensible proposals: cheap tier for mechanical work, mid tier as
-implementer default, a different vendor as reviewer. **Expensive tier** (xhigh/max
-effort, multi-hour runs, parallel heavy dispatch) ALWAYS needs explicit owner
-confirmation, every time, even after the brief. One brief per session; re-brief
-only if scope or risk changes.
+The worker-selection part is the **Model Consult** the lane files refer to. Cheap tier for
+mechanical work, mid tier as implementer default, a different vendor as reviewer. **Expensive tier**
+(xhigh/max effort, multi-hour runs, parallel heavy dispatch) ALWAYS needs explicit owner
+confirmation, every time. One brief per session; re-brief only if scope or risk changes.
 
 ## Self-implement vs dispatch
 
 - Trivial → the orchestrator implements directly (dispatch overhead exceeds the work).
-- Standard/Heavy → dispatch by default. The orchestrator's own tokens are usually
-  the scarcest; its job is plans, packets, verification, and integration — not bulk
-  code writing. Self-implementing requires the owner's waiver in the Session Brief,
-  with a justification for why doing it yourself beats briefing a worker (e.g. the
-  fix is smaller than the packet needed to explain it).
+- Standard/Heavy → dispatch by default. The orchestrator's tokens are the scarcest; its job is
+  plans, packets, verification, and integration — not bulk code writing. Self-implementing needs the
+  owner's waiver in the Session Brief, justified (e.g. the fix is smaller than the packet).
 - **Enforce this mechanically where the runtime allows** — intent has failed in practice
   (2026-07-26). Deny the orchestrator's writes to source; never its reads
   (`models/claude-code-orchestrator.md`). Confirm the lock is live before dispatch one.
@@ -76,21 +72,20 @@ Workers never receive the full plan, doc tree, or source dump. They receive a pa
 Full docs stay available on demand — a worker may read specific files it needs —
 but they are never pasted in by default. Cap every worker's return size.
 
-If the project has code graphs, query BEFORE bulk-reading files to locate code.
-Two tools may exist — do not use both for the same question:
-- **graphify** (architecture / "where is X"): always pass the MAIN checkout's
-  absolute `--graph` path; worktrees lack `graphify-out/` (`models/graphify.md`).
-- **code-review-graph** (diff / PR impact / review risk): use the **open
-  workspace** (per-worktree DB; MCP inherits cwd) — never hard-code MAIN as CRG
-  cwd when in an Orca worktree (`models/code-review-graph.md`).
-Put the relevant path(s) in every packet. Prefer project `AGENTS.md` when it
-defines a graph split.
+**At most ONE concurrently-dispatched worker may be told to run the full test suite.** Give the
+others targeted tests and let CI run the full one. (2026-07-30: three parallel suites OOM-killed a
+worker outright — `Fatal process out of memory` — and it looked like a silent worker death.)
+
+If the project has code graphs, query BEFORE bulk-reading files. **graphify** answers
+architecture / "where is X" (`models/graphify.md`); **code-review-graph** answers diff / PR impact
+(`models/code-review-graph.md`). Don't use both for one question; mind each one's cwd/path rule.
+Put the relevant path(s) in every packet; prefer project `AGENTS.md` when it defines a graph split.
 
 ## Proportion — match the packet to the card (2026-07-29)
 
-The evidence rules below are not free: a full uncached suite is minutes of wall clock per
-run. Demanding it on a card that changes a few lines is the most common avoidable cost in
-this harness — and one the worker cannot refuse, because the packet told it to.
+Evidence is not free: a full uncached suite is minutes of wall clock per run. Demanding it on a
+card that changes a few lines is the most common avoidable cost here — and one the worker cannot
+refuse, because the packet told it to.
 
 Scale the demand to what is actually at risk:
 
@@ -100,16 +95,21 @@ Scale the demand to what is actually at risk:
 | Ordinary bounded change | Full uncached gate once | Fail-before/pass-after on the specific behaviour changed |
 | Migration, auth, permissions, trust semantics, MCP contract | Full uncached gate + verify the artifact, not the gate | Everything: pre-fix proof, schema queried not ledger, confirm the test RAN not skipped |
 
-**Two traps worth naming in the packet itself:**
+**Three traps worth naming in the packet itself:**
 
-- **Pre-fix proof on a brand-new field proves nothing.** `expect(result.ok)` fails before the
-  fix because `ok` does not exist yet — that demonstrates the field is new, not that behaviour
-  changed. Demand the pre-fix assertion be on *behaviour that already had a shape*.
-- **A known flake must be named as out of scope**, with the file and the reason. Otherwise a
-  worker burns a pass chasing it, or worse, "fixes" it by loosening the test.
+- **Pre-fix proof on a brand-new field proves nothing.** `expect(result.ok)` fails before the fix
+  because `ok` does not exist yet — that shows the field is new, not that behaviour changed. Demand
+  the pre-fix assertion be on *behaviour that already had a shape*.
+- **A known flake must be named as out of scope**, with file and reason, or a worker burns a pass
+  chasing it — or "fixes" it by loosening the test.
+- **A card that adds a migration must be told to generate its metadata** with the project's generate
+  command and **never hand-edit the journal or a snapshot**. Require the report to confirm the
+  snapshot exists, `prevId` chains, and the journal timestamp strictly increases. (2026-07-30: a
+  packet omitting this got a hand-written journal and no snapshot; the packet that included it got
+  correct metadata first try.)
 
-This is not permission to skip gates on risky work — proportion runs both ways, and the
-heavy column is mandatory when `lanes/ship.md`'s triggers apply.
+Not permission to skip gates on risky work — proportion runs both ways, and the heavy column is
+mandatory when `lanes/ship.md`'s triggers apply.
 
 ## Verifying workers ("exit 0 is not proof of work")
 
@@ -129,6 +129,10 @@ Classify every failure: `product | test | environment | worker-session | access`
 - **A worker that dies with a connection error → re-run its preflight before blaming
   the packet.** A dead router/service makes every dispatch fail in seconds and looks
   exactly like a bad prompt (`models/omniroute.md`, 2026-07-25).
+- **Merge the trunk into any long-running branch before its gate means anything** — and always
+  before judging a red CI run on it. A worker's gate tests its branch; CI tests the *merge*. On a
+  fast-moving trunk these diverge silently, and the divergence looks exactly like a bad fix
+  (2026-07-30: a worker "fixed" a stale copy of a file its branch did not contain).
 - Retry the same failed mechanism ONCE. Then: swap worker model (one replacement
   max), or change lane (e.g. plugin route instead of raw CLI), or stop and ask.
 - When dispatch is blocked but the orchestrator is not, keep the non-dispatch work
@@ -138,12 +142,9 @@ Classify every failure: `product | test | environment | worker-session | access`
 
 ## Platforms (Orca, terminals, plugins)
 
-The process is platform-independent. Orca is a supported runtime for tracked
-multi-agent work (`models/orca.md`) — use it when the owner wants live visibility
-or already works in it; a single-worker task doesn't need it. Never let a
-platform's features add process steps the lane doesn't require. Evidence from the
-last retrospective: Orca transport cost <1% of tokens; the fresh full-context
-sessions attached to it were the cost.
+Platform-independent. Orca is supported for tracked multi-agent work
+(`models/orca.md`); a single-worker task doesn't need it. Never let a platform's
+features add process steps the lane doesn't require.
 
 ## Commits
 
