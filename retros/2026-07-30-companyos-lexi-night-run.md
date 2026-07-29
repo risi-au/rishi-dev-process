@@ -4,10 +4,11 @@
 ## Metrics
 
 - Lane: `ship.md` | Size/risk: 6 cards, three of them trust boundaries | Elapsed: overnight, single session
-- Workers spawned: **12 dispatches across 6 cards** —
-  `lexi-secure` ×7, `lexi-implement` ×3, `lexi-scout-grok` ×1, `lexi-review` ×1
-- Review cycles: **1** (#176, the standing auth-boundary exception) → REQUEST_CHANGES → fix
-- Gate runs: 6 full CI runs; 1 red (the composition break), 1 red-then-green after integration
+- Workers spawned: **15 dispatches across 7 cards** —
+  `lexi-secure` ×9, `lexi-implement` ×3, `lexi-scout-grok` ×1, `lexi-review` ×2
+- Review cycles: **2**, both the standing auth-boundary exception (#176, #134). **Both returned
+  REQUEST_CHANGES and both were right.** #176's was a coverage gap; #134's was a live HIGH.
+- Gate runs: 9 CI runs; 1 red (the composition break), 1 red-then-green after integration
 - **Infra failures: 3** — `worker-session` ×2 (silent OOM kill; `API Error: Response stalled
   mid-stream`), plus 1 wasted pass caused by dispatching onto a stale branch (my error, classified
   `worker-session` only because the worker inherited it)
@@ -17,8 +18,18 @@
 - Blocking checkpoint: **waived by the owner's kickoff** ("do not block on him"). Decisions taken
   unilaterally and stated: #135's trust gate, #134's scope cut, #183's fix shape.
 
-**Shipped:** #180, #183, #176, #178, #135 merged, deployed and verified live. #134 in flight.
-**Filed:** #183 (from the scout), #186. **Docs PRs:** #182, #187, #190.
+**Shipped:** #180, #183, #176, #178, #135 — merged, deployed, verified live.
+**Held deliberately:** #134 (PR #191) — CI-green, one owner decision away (#192).
+**Filed:** #183 (from the scout), #186, #192. **Docs PRs:** #182, #187, #190, #193.
+
+- **The auth-boundary review exception paid for itself twice in one night, again.** Both passes
+  returned REQUEST_CHANGES; neither finding was reachable from a green gate. #134's was a genuine
+  privilege escalation on a publicly reachable endpoint.
+- **The reviewer's "smallest correct fix" was wrong once, and applying it blind would have shipped a
+  dead feature.** Requiring a verified email with no mailer configured makes every invite permanently
+  unacceptable — the fifth instance of this repo's signature failure (#180, `SKILLS_REPO`, `0048`,
+  #183). A review finding is evidence, not an instruction; the orchestrator still has to check
+  whether the fix is *reachable*.
 
 ## What worked
 
