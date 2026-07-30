@@ -20,6 +20,10 @@ Owner: Rishi. "Owner approval" always means Rishi, explicitly, in this session.
    - `core/PROCESS.md` — loop, triage, risk profiles, gates, review state machine
    - `core/CONDUCT.md` — how to write code (lean, secure, surgical)
    - `core/GREEN.md` — why a worker's "tests pass" is not evidence, and the cure per case
+   - `core/GRAPH-TOOLS.md` — query the index before you Grep. Two tools, different jobs:
+     **code-review-graph** for structural questions (who calls this, what breaks, is it tested),
+     **graphify** for conceptual ones (how does this area work, what connects to what). Catching
+     yourself about to Grep the codebase is the signal that you skipped this.
 3. **Pick the lane** (owner may point you at one; otherwise triage and confirm):
 
 | Lane | Use when |
