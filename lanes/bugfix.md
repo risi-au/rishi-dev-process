@@ -11,18 +11,22 @@ Prereqs: START.md + core read; project overlay read.
    bugs, an evidence chain (screenshot/log + code path + known upstream bug) may
    substitute for live repro — declare the substitution in the finish report and
    re-run the original repro after deploy.
-3. **Minimise.** Shrink the repro to the smallest failing case. The root cause
+3. **Structural analysis** (R1+ and multi-file only; see `core/BUG-INTAKE.md`).
+   Query the code graph BEFORE dispatch: `code-review-graph` for callers/tests/impact,
+   `graphify` for conceptual context. Pre-fill ticket with: affected files, call paths,
+   test gaps, impact radius, root cause hypothesis. Trivial/R0 bugs skip this.
+4. **Minimise.** Shrink the repro to the smallest failing case. The root cause
    usually reveals itself here — do not skip ahead to patching symptoms.
-4. **Root cause.** State it in one sentence. If it was non-obvious, list the
+5. **Root cause.** State it in one sentence. If it was non-obvious, list the
    hypotheses you eliminated (cheap insurance against fixing the wrong thing).
-5. **Triage** size + risk. Most bugfixes are Standard / R0–R1 → plan-lite or none.
-   Auth, data, or migration bugs are R2.
-6. **Fix surgically.** The smallest change that removes the root cause. No
+6. **Triage** size + risk. Most bugfixes are Standard / R0–R1 → plan-lite or none.
+   Auth, data, or migration bugs are R2. Record risk profile in ticket frontmatter.
+7. **Fix surgically.** The smallest change that removes the root cause. No
    opportunistic cleanup — that's the refactor lane.
-7. **Regression test.** Write the test that fails on the old code and passes on
+8. **Regression test.** Write the test that fails on the old code and passes on
    the new. A fix without a regression test is not done (if the project has no
    test infra, say so explicitly in the finish report).
-8. **Gate → review → release → retro** per `core/PROCESS.md`. Obvious one-liners
+9. **Gate → review → release → retro** per `core/PROCESS.md`. Obvious one-liners
    may run as the trivial lane instead.
 
 ## Lane rules
