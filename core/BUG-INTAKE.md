@@ -29,6 +29,12 @@ DISPATCH (implementer reads ticket, knows exactly what to do)
 
 ### Tools to use (in order)
 
+> Which tool answers which question — and why they are not interchangeable — is in
+> `core/GRAPH-TOOLS.md`. Short version: **if the answer is a list it is code-review-graph, if it is
+> a paragraph it is graphify.** One caveat measured 2026-07-31: `query_graph_tool` needs a
+> *qualified* name for a common word. Querying `prune` returned ten unrelated tests; the qualified
+> name returned the two real callers in one call.
+
 1. **code-review-graph queries** (answers: who calls this? what breaks? are there tests?)
    ```bash
    code-review-graph query_graph_tool --operation callers_of --target "affected_function"
