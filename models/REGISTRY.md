@@ -15,7 +15,7 @@ at `localhost:20128`; workers target `sprint-*` combos, not vendor ids) —
 `models/omniroute.md`.
 
 Code-graph tools (not workers): graphify — `models/graphify.md`;
-code-review-graph — `models/code-review-graph.md`. One graph per question;
+code-review-graph — `models/codegraph.md`. One graph per question;
 see project AGENTS.md when present.
 
 ## Rules

@@ -1,5 +1,8 @@
 # ORCHESTRATION — roles, model consult, dispatch, context packets
-<!-- HARD CAP: 150 lines. To add, remove (core/SELF-IMPROVE.md). -->
+<!-- HARD CAP: 170 lines. To add, remove (core/SELF-IMPROVE.md).
+     Raised from 150 by owner decision 2026-08-02, when the graph-tool rewrite pushed it to 153.
+     A cap exists to force pruning, not to be raised whenever it binds — the next add still
+     removes something. -->
 
 ## Roles
 
@@ -76,10 +79,13 @@ but they are never pasted in by default. Cap every worker's return size.
 others targeted tests and let CI run the full one. (2026-07-30: three parallel suites OOM-killed a
 worker outright — `Fatal process out of memory` — and it looked like a silent worker death.)
 
-If the project has code graphs, query BEFORE bulk-reading files. **graphify** answers
-architecture / "where is X" (`models/graphify.md`); **code-review-graph** answers diff / PR impact
-(`models/code-review-graph.md`). Don't use both for one question; mind each one's cwd/path rule.
-Put the relevant path(s) in every packet; prefer project `AGENTS.md` when it defines a graph split.
+If the project has code graphs, query BEFORE bulk-reading files. **graphify** = architecture;
+**CodeGraph** = blast radius and packet assembly; **Serena** = symbol edits (`core/GRAPH-TOOLS.md`).
+One tool per question; put the relevant path(s) in every packet. **Build the packet's file list with
+`codegraph explore "<task>"`, not by reading** — it gives allowed files, call paths, and blast radius
+in one call, and catches the caller the ticket omits (a cron job behind the same function as a page).
+**First check `codegraph status` looks like the size of the repo:** a partial index returns zero
+callers, indistinguishable from a safe change.
 
 ## Proportion — match the packet to the card (2026-07-29)
 

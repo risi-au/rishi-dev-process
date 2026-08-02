@@ -12,7 +12,7 @@ Prereqs: START.md + core read; project overlay read.
    substitute for live repro — declare the substitution in the finish report and
    re-run the original repro after deploy.
 3. **Structural analysis** (R1+ and multi-file only; see `core/BUG-INTAKE.md`).
-   Query the code graph BEFORE dispatch: `code-review-graph` for callers/tests/impact,
+   Query the code graph BEFORE dispatch: `codegraph` for callers/tests/impact,
    `graphify` for conceptual context. Pre-fill ticket with: affected files, call paths,
    test gaps, impact radius, root cause hypothesis. Trivial/R0 bugs skip this.
 4. **Minimise.** Shrink the repro to the smallest failing case. The root cause
