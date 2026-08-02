@@ -6,7 +6,15 @@
      Below is the real issue from the first run (companyos-lexi #279, 2026-08-02) —
      six sessions, fourteen issues, zero conflicts. Replace the specifics; keep the
      shape, and keep the reasons attached to the rules. A rule with its reason
-     survives contact with a session that thinks it knows better. -->
+     survives contact with a session that thinks it knows better.
+
+     VENDOR NOTE: the example names Claude Code, Orca and specific model tiers
+     because that is what the first run used. This harness is platform-independent
+     (README.md) and core/PROCESS.md actively prefers a DIFFERENT vendor for review
+     than the one that implemented. Substitute whatever models/REGISTRY.md lists as
+     active — the lane itself assumes nothing about vendor. Worktrees, file ownership,
+     one-migration-at-a-time and gate-on-the-merge are git and CI facts, not model
+     behaviour, so they hold for Codex, Grok, Cline or a mix. -->
 
 Coordination issue for the overnight batch. **Any session may read this; only the orchestrator acts on the integration section.** If the orchestrator session dies, another can pick up integration from here — that is why this is an issue and not chat context.
 
