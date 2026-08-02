@@ -37,6 +37,15 @@ Owner: Rishi. "Owner approval" always means Rishi, explicitly, in this session.
 | `lanes/refactor.md` | Behavior-preserving restructure or cleanup |
 | `lanes/deployment.md` | Live environments, infra, releases |
 | `lanes/maintenance.md` | Dependency upgrades, security patches, tooling |
+| `lanes/batch.md` | **Several independent issues and an expensive deploy** — parallel sessions, one Release |
+
+   **Before picking a lane, route the request** (`lanes/batch.md` step 0 — every session, batch or
+   not). Answer three things for the owner in one line each, then wait:
+   **(a)** can it be verified locally, or does it genuinely need production?
+   **(b)** is it one piece, or several independent ones with no shared files?
+   **(c)** does any part need an owner decision — those go on hold without blocking the rest.
+   Then propose: single lane, batch, or prod-only follow-up. Do not assume a batch is wanted
+   because it is impressive — a single issue never justifies the coordination overhead.
 
 4. **Send the Session Brief and WAIT.** For anything above trivial: read
    `core/ORCHESTRATION.md` + `models/REGISTRY.md`, then send the owner ONE
