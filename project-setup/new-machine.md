@@ -64,10 +64,26 @@ Full details and history: `models/codex.md`.
    `graphify install`. Per-project indexing happens per project, not here.
    Adapter: `models/graphify.md` (always query via MAIN absolute `--graph` path;
    worktrees lack `graphify-out/`).
-2. code-review-graph (diff / PR impact graphs): `python -m pip install
-   code-review-graph` (or pipx/uv). Wire MCP as `code-review-graph serve` with
-   **no fixed main cwd** so Orca worktrees inherit the open folder. Adapter:
-   `models/code-review-graph.md`.
+2. CodeGraph (blast radius / call paths / packet assembly). Adapter:
+   `models/codegraph.md`.
+   ```
+   irm https://raw.githubusercontent.com/colbymchenry/codegraph/main/install.ps1 | iex   # Windows
+   codegraph install -y        # registers MCP into every detected agent
+   codegraph telemetry off     # anonymous stats are ON by default
+   ```
+   **Windows:** `codegraph install -y` registers the `.cmd` shim, and stdio MCP
+   fails through it (`-32000: Connection closed`). Re-register against the
+   vendored runtime — see the quirks in `models/codegraph.md`. Wire MCP with
+   **no fixed cwd** so worktrees inherit the open folder; a pinned cwd silently
+   answers about the wrong branch.
+3. Serena (symbolic editing, LSP). Adapter: `models/serena.md`.
+   ```
+   uv tool install -p 3.13 serena-agent
+   serena init && serena setup claude-code && serena setup codex
+   ```
+   Consider `web_dashboard_open_on_launch: false` in `~/.serena/serena_config.yml`
+   — it is `true` by default and opens a window every time Serena starts, which
+   means one per dispatched worker.
 3. Syncthing — if this machine joins the owner's working-file sync mesh.
    **[OWNER]** device pairing.
 4. Docker Desktop — only if a project overlay requires it (e.g. companyos
@@ -85,9 +101,14 @@ For each project this machine will work on:
    fetches, copies, or reads secret values; it only confirms the file exists.
 4. Optional graphs (pick what the project uses):
    - graphify on MAIN: `/graphify <project path>` (code-only = zero LLM tokens).
-   - code-review-graph in MAIN: `cd <project> && code-review-graph build`.
-   - Each new Orca worktree that needs review/impact: `code-review-graph build`
-     once in that worktree if `status` shows 0 files.
+   - CodeGraph, **per checkout including every worktree**: `codegraph init .`
+     (~4s / 550 files). On `companyos-lexi` the session-start hook
+     (`.claude/hooks/codegraph.sh`) does this automatically; elsewhere it is manual.
+   - Serena, per project — **non-interactive form, or it hangs waiting on a
+     language prompt**: `serena project create . --name <name> --language typescript --index`
+   - **Then check the file count.** `codegraph status` must report a number that
+     looks like the size of the repo. A partial index answers every query
+     confidently and returns zero callers for anything it never indexed.
 
 ## Phase 7 — Verification checklist (agent runs all, reports a table)
 
@@ -99,7 +120,9 @@ codex --version                                   -> prints version
 codex sandbox -- cmd /c "echo SANDBOX-OK"         -> SANDBOX-OK, no UAC
 grok --version                                    -> prints version (if active)
 graphify --version                                -> prints version
-code-review-graph --version                       -> prints version
+codegraph --version                               -> prints version
+serena --version                                  -> prints version
+claude mcp list                                   -> codegraph + serena Connected
 ```
 
 Then run each active worker's full preflight from `models/<worker>.md`

@@ -18,9 +18,9 @@ Orca checkouts are separate folders (e.g.
 `C:\Users\rishi\orca\workspaces\companyos\<task>`), not only the main clone.
 - **graphify:** still query MAIN's absolute `graphify-out\graph.json` — worktrees
   do not get that dir (`models/graphify.md`).
-- **code-review-graph:** per worktree under `.code-review-graph/`; MCP must
+- **CodeGraph:** per worktree under `.codegraph/`; MCP must
   inherit the agent workspace cwd (no hard-coded main path). Build once in a
-  new worktree if status is empty (`models/code-review-graph.md`).
+  new worktree if status is empty (`models/codegraph.md`).
 - Product work runs in the worktree cwd; kickoff prompts should name both
   Project (canonical main path) and Workspace (open Orca path).
 

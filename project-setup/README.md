@@ -42,9 +42,9 @@ Code graphs (if any — honor project AGENTS.md; drop lines that do not apply):
     (graphify-out is gitignored; Orca worktrees lack it):
       graphify query "<q>" --graph "<MAIN>\graphify-out\graph.json"
     before bulk-reading files. See models/graphify.md.
-  - Diff / PR blast radius / review risk: code-review-graph in THIS workspace
-    (per-worktree .code-review-graph/; MCP inherits cwd; build once if empty).
-    Do NOT hard-code MAIN as CRG cwd. See models/code-review-graph.md.
+  - Diff / PR blast radius / review risk: CodeGraph in THIS workspace
+    (per-worktree .codegraph/; MCP inherits cwd; build once if empty).
+    Do NOT hard-code MAIN as CRG cwd. See models/codegraph.md.
   - One graph system per question — do not run both for the same ask.
 ```
 

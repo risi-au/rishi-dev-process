@@ -24,7 +24,7 @@ risk-profile: [R0 | R1 | R2]
 - [any additional modules involved]
 
 **Call paths (who calls this?):**
-- [Direct callers from code-review-graph query_graph_tool callers_of]
+- [Direct callers from codegraph callers]
 - [Top-level entry points — how does a user action reach this?]
 - Example format:
   ```
@@ -40,7 +40,7 @@ risk-profile: [R0 | R1 | R2]
   - Example: "error-on-unavailable-scope case has no test"
 
 **What breaks if we fix this wrong:**
-- [Results from code-review-graph get_impact_radius_tool]
+- [Results from codegraph impact]
 - [What else depends on this function/component?]
 - [What guarantees could we accidentally break?]
 
@@ -139,7 +139,7 @@ This gives implementer a baseline to compare against post-fix.
 
 ### Estimated scope:
 
-- **Files to change:** ~[N] (based on code-review-graph impact radius)
+- **Files to change:** ~[N] (based on codegraph impact)
 - **Test impact:** ~[N] tests touch this area
 - **New tests:** 1 regression test (required)
 - **Deployment risk:** [low | medium | high] — brief reason

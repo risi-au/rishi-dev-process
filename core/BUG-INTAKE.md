@@ -16,7 +16,7 @@ INITIAL TRIAGE (confirm it's a bug)
 [FOR R0 ONLY: skip to dispatch]
 [FOR R1+: continue below]
   ↓
-STRUCTURAL ANALYSIS (code-review-graph queries)
+STRUCTURAL ANALYSIS (CodeGraph queries)
   ↓
 PRE-BRIEF TICKET (fill template below)
   ↓
@@ -35,11 +35,11 @@ DISPATCH (implementer reads ticket, knows exactly what to do)
 > *qualified* name for a common word. Querying `prune` returned ten unrelated tests; the qualified
 > name returned the two real callers in one call.
 
-1. **code-review-graph queries** (answers: who calls this? what breaks? are there tests?)
+1. **CodeGraph queries** (answers: who calls this? what breaks? are there tests?)
    ```bash
-   code-review-graph query_graph_tool --operation callers_of --target "affected_function"
-   code-review-graph query_graph_tool --operation tests_for --target "affected_function"
-   code-review-graph get_impact_radius_tool --target "affected_function"
+   codegraph callers "affected_function"
+   codegraph affected "affected_function"
+   codegraph impact "affected_function"
    ```
 
 2. **graphify query** (only if R2 or cross-module concern)
@@ -189,19 +189,19 @@ risk-profile: [R0 | R1 | R2]
 ### Step 2: Run graph queries (5 min)
 ```bash
 # Find the form component
-code-review-graph semantic_search_nodes_tool --keyword "InvitePersonForm"
+codegraph query "InvitePersonForm"
 # Result: packages/os/src/components/ScopeSettings/InvitePersonForm.tsx
 
 # Who calls it
-code-review-graph query_graph_tool --operation callers_of --target "InvitePersonForm"
+codegraph callers "InvitePersonForm"
 # Result: ScopeSettings page (one location; not reused)
 
 # What tests exist
-code-review-graph query_graph_tool --operation tests_for --target "InvitePersonForm"
+codegraph affected "InvitePersonForm"
 # Result: InvitePersonForm.test.tsx exists; test for "field retained on error" is MISSING
 
 # What breaks if we change the state handler
-code-review-graph get_impact_radius_tool --target "onScopeChange"
+codegraph impact "onScopeChange"
 # Result: Only affects this form's state; no cross-component impact
 ```
 
@@ -221,7 +221,7 @@ They never Grep. They never wonder "what else calls this." They start coding in 
 - [ ] Confirmed it's a bug (not idea/knowledge-miss)
 - [ ] Assigned severity + risk profile
 - [ ] For R0: skip to dispatch
-- [ ] For R1+: ran code-review-graph queries (3–5 min)
+- [ ] For R1+: ran CodeGraph queries (3–5 min)
 - [ ] Filled "Initial context" section with graph results
 - [ ] Wrote one-sentence root cause hypothesis (backed by analysis)
 - [ ] Listed what breaks if we're wrong (impact assessment)
@@ -236,7 +236,7 @@ If you skip structural analysis for R1+ or miss sections → file in project's I
 ## Project specifics
 
 Projects may override this in their `AGENTS.md`:
-- Which graph tool to use for their codebase (code-review-graph path, graphify index location)
+- Which graph tool to use for their codebase (CodeGraph index location, graphify index location)
 - Which bugs require structural analysis (default: R1+)
 - Template variations (e.g. add security checklist for auth bugs)
 
