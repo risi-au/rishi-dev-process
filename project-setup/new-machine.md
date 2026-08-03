@@ -26,7 +26,7 @@ from the official source listed for each tool.
 gh repo clone risi-au/rishi-dev-process <chosen-path>
 ```
 
-Recommended path mirrors the original: `G:\PROJECTS\Rishi-Setup\rishi-dev-process`
+Recommended path mirrors the original: `G:\PROJECTS\LEXI OS\rishi-dev-process`
 (any path works; use the local clone path in session prompts).
 
 ## Phase 3 — Agent CLIs (the worker pool)

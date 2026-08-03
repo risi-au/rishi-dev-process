@@ -5,7 +5,12 @@ for ALL development work — any project, any model, any platform (Claude Code, 
 Grok, Orca, or others). The process is the authority, not the tool you run in.
 
 Canonical home: https://github.com/risi-au/rishi-dev-process
-Local clone: `G:\PROJECTS\Rishi-Setup\rishi-dev-process`
+Local clone: `G:\PROJECTS\LEXI OS\rishi-dev-process`
+
+> **This is the only clone.** `G:\PROJECTS\Rishi-Setup\rishi-dev-process` was retired by the owner
+> on 2026-08-03 and deliberately emptied so nobody follows it by accident. If you find yourself
+> reading a harness from that path you are reading nothing — stop and use the path above. **Do not
+> "helpfully" restore it.** Step 0 below still applies to *this* clone.
 Owner: Rishi. "Owner approval" always means Rishi, explicitly, in this session.
 
 ## Protocol (in order)

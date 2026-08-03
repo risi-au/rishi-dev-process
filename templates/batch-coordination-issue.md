@@ -49,7 +49,7 @@ Coordination issue for the overnight batch. **Any session may read this; only th
 2. **You own a branch and a file set. Do not touch files another session owns.** The groupings below exist because three issues all edit `apps/os/src/app/(app)/s/[...path]/page.tsx`; that file belongs to S1 alone.
 3. **Never merge to `main`.** Never open a PR against `main`. Push your branch and stop.
 4. **Never merge another session's branch.** Sessions do not talk to each other.
-5. Follow `G:\PROJECTS\Rishi-Setup\rishi-dev-process\START.md`. Lane per issue label; the Session Brief to the owner is **not** required for these — the owner has already approved scope and worker (this issue is that approval).
+5. Follow `G:\PROJECTS\LEXI OS\rishi-dev-process\START.md`. Lane per issue label; the Session Brief to the owner is **not** required for these — the owner has already approved scope and worker (this issue is that approval).
 6. **Use CodeGraph before reading files.** `codegraph explore "<task>"` gives allowed files, call paths and blast radius in one call. Check `codegraph status` looks like ~550 files first; if it is small, run `codegraph init .`.
 7. **Use Serena for symbol-shaped edits** (`rename_symbol`, `replace_symbol_body`). Do **not** trust Serena's `find_referencing_symbols` for blast radius — it misses cross-package references through `@companyos/*` aliases. CodeGraph for scope, Serena for the edit.
 8. **Verify locally.** Postgres is up (`companyos-postgres`, project `lexi-dev`, fully migrated 57/57). `DATABASE_URL=postgres://companyos:devpassword123@localhost:5432/companyos`. Run the app with your own port: `PORT=300N npm run dev`.

@@ -10,7 +10,7 @@ standard — Claude Code, Codex, Cursor, Gemini CLI, and 25+ other tools read it
 ## Dev process
 All dev work follows the master harness. Read START.md at
 https://github.com/risi-au/rishi-dev-process
-(local clone: G:\PROJECTS\Rishi-Setup\rishi-dev-process) BEFORE working.
+(local clone: G:\PROJECTS\LEXI OS\rishi-dev-process) BEFORE working.
 The rest of this file is the PROJECT overlay (subject-matter rules, commands,
 architecture); the harness governs process.
 <!-- HARNESS:END -->
