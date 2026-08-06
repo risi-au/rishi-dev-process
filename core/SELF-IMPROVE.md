@@ -25,9 +25,10 @@ Write `retros/YYYY-MM-DD-<project>-<slug>.md` from `templates/retro.md`:
 
 | File | Cap |
 |---|---|
-| START.md | 100 lines |
+| START.md | 120 lines — raised from 100 on 2026-08-06; it had sat at 117 for weeks, so the cap was being quietly ignored rather than enforced, which is worse than an honest number |
 | core/PROCESS.md, core/ORCHESTRATION.md | 150 lines each |
 | core/CONDUCT.md | 80 lines |
+| core/DISPATCH.md | 95 lines |
 | core/GREEN.md | 90 lines |
 | core/SELF-IMPROVE.md | 60 lines |
 | each lanes/*.md | 80 lines |

@@ -45,3 +45,34 @@ Also proposed for `models/omniroute.md` (not core, no gate needed per SELF-IMPRO
 standing recommendation not to rely on it as the review of record for auth/data changes.
 
 Owner decision: APPROVED in chat 2026-08-06 (all three proposals + the models/ note).
+
+## Second request, same session — the Dispatch Consult (owner-initiated)
+
+Owner, 2026-08-06: *"for every session, I want the agent to ask me which method to follow… the agent
+at the beginning of the session has to propose which way to go forward, and based on that, we
+proceed… I will check the limits and give my approval."*
+
+The harness had a Model Consult (which model at which effort) but **no Dispatch Consult** (which
+*mechanism*, and whose quota it spends). Four modes had been used across sessions with no written
+comparison, so each session re-derived the trade-off from scratch — and 2026-08-04 spent a batch on
+the owner's Claude quota that the owner would have routed elsewhere had he been asked.
+
+Applied (owner-approved in the same chat):
+
+| Target | Change |
+|---|---|
+| `core/DISPATCH.md` | **New file** (94/95). Four modes — native subagents, Codex headless, OmniRoute, solo — each with what it pays for, what it is good at, its measured failure modes, and its traps. Selection table. The blocking Dispatch Consult format. |
+| `START.md` | Step 4 now requires the Dispatch Consult alongside the Model Consult, and states plainly that **the mode is the owner's call**, because only the owner knows what quota is left. |
+| `core/SELF-IMPROVE.md` | Cap row for `core/DISPATCH.md`; **START.md cap raised 100 → 120.** |
+
+**On that cap raise, honestly:** START.md was already **117/100** before this session — over cap for
+weeks while the file itself instructs agents to respect caps. A cap being quietly ignored is worse
+than an honest number. It was trimmed to 111 *while* gaining the Dispatch Consult, and the cap moved
+to 120 to match reality. Flagged rather than done silently.
+
+**Still over cap, deliberately not touched:** `core/ORCHESTRATION.md` at **156/150**. Not this
+session's subject, and trimming a file mid-session that I had not read in full is how good content
+gets lost. Next retro should either trim it or raise it to 160 — but decide, rather than leave a
+stated rule being broken by the harness's own files.
+
+Owner decision (dispatch consult): APPROVED in chat 2026-08-06.
