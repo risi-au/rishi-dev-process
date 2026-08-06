@@ -56,6 +56,24 @@ re-dispatching or blaming the packet.**
 When it is down, the orchestrator can still run gates, review diffs, commit, and open
 PRs — only dispatch is blocked. Say so plainly and keep the non-dispatch work moving.
 
+## Review quality — do not make it the review of record (2026-08-06)
+
+Cumulative as a reviewer: roughly **5 real : 10 false**. Measured again 2026-08-06 on a
+batch diff touching the OAuth authentication boundary: **3 findings, all three false on
+verification, and it missed the one real defect present in that same diff** — a deleted
+authorization check that would have let a revoked connection keep working for up to 7
+days. It even retracted one of its own findings mid-answer.
+
+For contrast, on a comparable diff the same night, a fresh Codex reviewer on a clean
+checkout returned **6 findings, all 6 real**, given a packet that named the two things
+the orchestrator was personally unsure about and told it to argue them.
+
+Rule: **OmniRoute review is a cheap extra opinion, never the review of record for
+anything touching auth, permissions, data deletion or a security boundary.** Those get a
+fresh-session reviewer per `templates/packet-reviewer.md`. Verify every OmniRoute finding
+before acting — the false rate is high enough that acting on one unverified is a real
+risk of "fixing" correct code.
+
 ## Dispatch quirks (2026-07-29)
 
 **Pass ABSOLUTE paths for every dispatch argument — including the output file.** A wrapper may

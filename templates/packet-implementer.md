@@ -41,10 +41,26 @@ VERIFY WITH: <exact commands, e.g. the affected tests — pick them with
 `codegraph affected <changed files>` rather than guessing which suite covers this>
 If the full suite exceeds your command runner's timeout: say so plainly, never claim green,
 and run targeted tests from the REPOSITORY ROOT.
+<!-- ORCHESTRATOR: scope this to the BLAST RADIUS, not to the card's package. A gate scoped to
+     the package you are thinking about is how a change breaks a test in a package you are not.
+     2026-08-06: a slug-collision fix gated to `packages/api` broke an MCP test; the card's own
+     gate could not see it and the merged-tree gate had to. -->
+BOTH STATES: if any verify command's behaviour depends on an environment variable or an external
+service (a database URL, a service secret, a running daemon), run it **with and without**, and
+report both exit codes. A command that silently skips when the variable is absent looks identical
+to one that passed. 2026-08-06: `turbo run test --force` does not forward `DATABASE_URL` under
+turbo 2 strict env mode — every database-gated test skipped while turbo reported
+`30 successful, 30 total`, including the two race tests that batch existed to add.
 
 MUTATION RECEIPT (for every new test you add): show it FAILS against the pre-change code —
 verbatim failure output, not an assertion. A new test that passes against the old code is
 measuring nothing.
+
+DECLARE YOUR REMOVALS: your report describes what you added; nothing describes what you took
+away. Before you write it, `git diff` your own change and list every deleted `if`, guard, check,
+validation and assertion. 2026-08-06: a card removed an authorization check and replaced it with
+a path that never consulted the consent table — 418 tests and a clean production build were green
+across it, and the report never mentioned the deletion because reports describe additions.
 
 CONDUCT (summary): minimum code that passes the criteria; search for existing
 code/stdlib/deps before writing new; surgical changes only.
@@ -53,6 +69,8 @@ RETURN (max <N> lines):
 ```
 Files changed:
 - path — one line why
+Removed or weakened: <every check, guard, validation, permission test or existing test this diff
+  DELETES or makes less strict, and why — "none" is a valid and expected answer>
 Deviations: <none | what + why>
 Left undone: <none | list>
 Verification: <exact commands + verbatim pass/fail counts>
